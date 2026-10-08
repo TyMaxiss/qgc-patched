@@ -49,10 +49,6 @@ SetupPage {
         return Math.max(800, Math.min(2200, pwm))
     }
 
-    function lowPwm()  { return _clampPwm(lowPwmField.text, 1000) }
-    function highPwm() { return _clampPwm(highPwmField.text, 2000) }
-    function midPwm()  { return Math.round((lowPwm() + highPwm()) / 2) }
-
     function sendServoPwm(servoNum, pwm) {
         controller.vehicle.setServo(servoNum, pwm)
     }
@@ -65,6 +61,12 @@ SetupPage {
             // can scroll horizontally instead of clipping the outputs table.
             width:   Math.max(availableWidth, implicitWidth)
             spacing: _margins
+
+            // These read the PWM fields below, so they must live inside this component: ids
+            // declared in a Component are not visible from functions on the SetupPage root.
+            function lowPwm()  { return _clampPwm(lowPwmField.text, 1000) }
+            function highPwm() { return _clampPwm(highPwmField.text, 2000) }
+            function midPwm()  { return Math.round((lowPwm() + highPwm()) / 2) }
 
             QGCLabel {
                 text:     qsTr("Configure ArduPilot servo outputs.")
